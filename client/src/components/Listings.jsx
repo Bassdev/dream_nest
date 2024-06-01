@@ -43,16 +43,16 @@ const Listings = () => {
   };
 
   // Simulate authentication check (for demonstration purposes)
-  useEffect(() => {
-    // Replace this with actual authentication check logic
-    const checkAuth = () => {
-      // Assume a function `isUserAuthenticated` that returns a boolean
-      const authStatus = true; // Replace with actual authentication check
-      setIsAuthenticated(authStatus);
-    };
+  // useEffect(() => {
+  //   // Replace this with actual authentication check logic
+  //   const checkAuth = () => {
+  //     // Assume a function `isUserAuthenticated` that returns a boolean
+  //     const authStatus = true; // Replace with actual authentication check
+  //     setIsAuthenticated(authStatus);
+  //   };
 
-    checkAuth();
-  }, []);
+  //   checkAuth();
+  // }, []);
 
   return (
     <>
@@ -105,7 +105,7 @@ const Listings = () => {
               )}
             </div>
           ) : (
-            <p>Please login to view listings.</p>
+            <a  href="/login" style={{marginLeft:"40%"}}> Please login to view listings.</a>
           )}
         </>
       )}
