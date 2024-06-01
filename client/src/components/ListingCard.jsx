@@ -61,21 +61,27 @@ const ListingCard = ({
     }
   };
 
-  useEffect(() => {
-    if (!user) {
-      navigate("/login"); // Redirect to login page if not authenticated
+  const handleCardClick = () => {
+    if (user) {
+      navigate(`/properties/${listingId}`);
+    } else {
+      navigate("/login");
     }
-  }, [user, navigate]);
+  };
 
-  // Only render the component if the user is logged in
-  if (!user) return null;
+  const handleWishlistClick = (e) => {
+    e.stopPropagation();
+    if (user) {
+      patchWishList();
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <div
       className="listing-card"
-      onClick={() => {
-        navigate(`/properties/${listingId}`);
-      }}
+      onClick={handleCardClick}
     >
       <div className="slider-container">
         <div
@@ -136,10 +142,7 @@ const ListingCard = ({
 
       <button
         className="favorite"
-        onClick={(e) => {
-          e.stopPropagation();
-          patchWishList();
-        }}
+        onClick={handleWishlistClick}
         disabled={!user}
       >
         {isLiked ? (

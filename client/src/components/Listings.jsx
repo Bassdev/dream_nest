@@ -7,7 +7,6 @@ import Loader from "./Loader";
 const Listings = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Local authentication state
   const [listings, setListings] = useState([]);
 
   const getFeedListings = async () => {
@@ -26,6 +25,7 @@ const Listings = () => {
       setLoading(false);
     } catch (err) {
       console.log("Fetch Listings Failed", err.message);
+      setLoading(false);
     }
   };
 
@@ -34,25 +34,8 @@ const Listings = () => {
   }, [selectedCategory]);
 
   const handleCategoryClick = (category) => {
-    if (isAuthenticated) {
-      setSelectedCategory(category);
-    } else {
-      // Redirect to login page if not authenticated
-      window.location.href = '/';
-    }
+    setSelectedCategory(category);
   };
-
-  // Simulate authentication check (for demonstration purposes)
-  // useEffect(() => {
-  //   // Replace this with actual authentication check logic
-  //   const checkAuth = () => {
-  //     // Assume a function `isUserAuthenticated` that returns a boolean
-  //     const authStatus = true; // Replace with actual authentication check
-  //     setIsAuthenticated(authStatus);
-  //   };
-
-  //   checkAuth();
-  // }, []);
 
   return (
     <>
@@ -61,7 +44,7 @@ const Listings = () => {
           <div
             className={`category ${category.label === selectedCategory ? "selected" : ""}`}
             key={index}
-            onClick={() => handleCategoryClick(category.label)} // Call handleCategoryClick on category click
+            onClick={() => handleCategoryClick(category.label)}
           >
             <div className="category_icon">{category.icon}</div>
             <p>{category.label}</p>
@@ -72,42 +55,36 @@ const Listings = () => {
       {loading ? (
         <Loader />
       ) : (
-        <>
-          {isAuthenticated ? (
-            <div className="listings">
-              {listings.map(
-                ({
-                  _id,
-                  creator,
-                  listingPhotoPaths,
-                  city,
-                  province,
-                  country,
-                  category,
-                  type,
-                  price,
-                  booking = false
-                }) => (
-                  <ListingCard
-                    key={_id} // Add a unique key
-                    listingId={_id}
-                    creator={creator}
-                    listingPhotoPaths={listingPhotoPaths}
-                    city={city}
-                    province={province}
-                    country={country}
-                    category={category}
-                    type={type}
-                    price={price}
-                    booking={booking}
-                  />
-                )
-              )}
-            </div>
-          ) : (
-            <a  href="/login" style={{marginLeft:"40%"}}> Please login to view listings.</a>
+        <div className="listings">
+          {listings.map(
+            ({
+              _id,
+              creator,
+              listingPhotoPaths,
+              city,
+              province,
+              country,
+              category,
+              type,
+              price,
+              booking = false
+            }) => (
+              <ListingCard
+                key={_id}
+                listingId={_id}
+                creator={creator}
+                listingPhotoPaths={listingPhotoPaths}
+                city={city}
+                province={province}
+                country={country}
+                category={category}
+                type={type}
+                price={price}
+                booking={booking}
+              />
+            )
           )}
-        </>
+        </div>
       )}
     </>
   );
